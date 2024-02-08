@@ -1,0 +1,22 @@
+body {
+    padding-right:30px;
+    padding-left: 20px;
+    font-size:20px;
+}
+img {
+    float:right;
+    width:10%;
+    height:auto;
+}
+canvas { 
+    width:90%;
+    height:90%;
+    border:1px solid grey;
+}
+button {
+    line-height:1.5;
+    font-size:18px;
+    margin-top: 2px;
+    margin-bottom:5px;
+    margin-right:5px;
+}
