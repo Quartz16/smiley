@@ -9,8 +9,8 @@ img {
     height:auto;
 }
 canvas { 
-    width:90vw;
-    height:auto;
+    width:80vw;
+    height:80vh;
     border:1px solid grey;
 }
 button {

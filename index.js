@@ -50,16 +50,18 @@ function resizeAndDraw() {
     config.canvas.height = window.innerHeight;
 
     //redraw
-    for (let i = 0; i < smileys.length; i++) {
+    for (let i = 0; i < smileyIndex; i++) {
         var smiley = smileys[i];
-        drawSmiley(smiley.x, smiley.y);
+        drawSmiley(smiley.x, smiley.y, true);
     }
 }
 
-function drawSmiley(x, y) {
+function drawSmiley(x, y, redraw) {
     
-    smileys[smileyIndex] = {x, y};
-    smileyIndex++;
+    if (!redraw) {
+        smileys[smileyIndex] = {x, y};
+        smileyIndex++;
+    }
     createLine(config.context, x-config.eyePadding, y, x-config.eyePadding, y-config.eyeHeight);
     createLine(config.context, x+config.eyePadding, y, x+config.eyePadding, y-config.eyeHeight);
     let startX = x-config.mouthPaddingX;
@@ -83,6 +85,6 @@ function createSmiley(e) {
     let mouseY = e.clientY;
 
     var canvasCoords = convertXYToCanvas(e, mouseX, mouseY);
-    drawSmiley(canvasCoords.x, canvasCoords.y);
+    drawSmiley(canvasCoords.x, canvasCoords.y, false);
 }
 
