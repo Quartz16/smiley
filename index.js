@@ -46,12 +46,18 @@ function createBezierCurve(context, startX, startY, x1, y1, x2, y2, x3, y3) {
 }
 
 function resizeAndDraw() {
+    var oldCanvasWidth = config.canvas.width;
+    var oldCanvasHeight = config.canvas.height;
     config.canvas.width = window.innerWidth;
     config.canvas.height = window.innerHeight;
+    var ratioX = config.canvas.width / oldCanvasWidth;
+    var ratioY = config.canvas.height / oldCanvasHeight;
 
     //redraw
     for (let i = 0; i < smileyIndex; i++) {
         var smiley = smileys[i];
+        smileys[i].x *= ratioX;
+        smileys[i].y *= ratioY;
         drawSmiley(smiley.x, smiley.y, true);
     }
 }
