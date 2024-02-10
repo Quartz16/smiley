@@ -11,8 +11,11 @@ class SmileyConfig {
         this.mouthPaddingY = mouthPaddingY;
         this.mouthHeight = mouthHeight;
     }
+
+
 }
 
+var currentConfig;
 const smileys = {};
 var smileyIndex = 0;
 var mousedown = false;
@@ -61,12 +64,17 @@ function resizeAndDraw() {
     }
 }
 
-function initializeConfig(x, y) {
-    return new SmileyConfig(x, y, 10, 5, 20, 6, 2, 7);
+function initializeConfig() {
+    currentConfig = new SmileyConfig(0, 0, 40, 20, 80, 30, 8, 28);
+}
+
+function createConfig(x, y) {
+    return new SmileyConfig(x, y, currentConfig.eyeHeight, currentConfig.eyePadding, currentConfig.circleRadius, currentConfig.mouthPaddingX, currentConfig.mouthPaddingY, currentConfig.mouthHeight);
+
 }
 
 function drawSmiley(context, x, y, redraw) {
-    var config = initializeConfig(x, y);
+    var config = createConfig(x, y);
     
     if (!redraw) {
         smileys[smileyIndex] = config;
@@ -94,11 +102,18 @@ function convertXYToCanvas(e, canvas, mouseX, mouseY) {
 function createSmiley(e) {
     let mouseX = e.clientX;
     let mouseY = e.clientY;
-
     var canvas = document.getElementById("canvas");
     var context = canvas.getContext("2d");
 
     var canvasCoords = convertXYToCanvas(e, canvas, mouseX, mouseY);
     drawSmiley(context, canvasCoords.x, canvasCoords.y, false);
+}
+
+function getEyeHeightMin() {
+    return 1;
+}
+
+function getEyeHeightMax() {
+    return 100;
 }
 

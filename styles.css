@@ -8,6 +8,16 @@ img {
     width:10%;
     height:auto;
 }
+.slidecontainer {
+    float:right;
+    width:10%;
+    height:auto;
+}
+.slider {
+    float:right;
+    width:10%;
+    height:auto;
+}
 canvas { 
     width:80vw;
     height:80vh;
