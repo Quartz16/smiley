@@ -15,6 +15,7 @@ class SmileyConfig {
 
 const smileys = {};
 var smileyIndex = 0;
+var mousedown = false;
 
 
 function createLine(context, x1, y1, x2, y2) {
