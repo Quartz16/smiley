@@ -1,25 +1,21 @@
 
 
-class Config {
-    constructor(eyeHeight, eyePadding, circleRadius, mouthPaddingX, mouthPaddingY, mouthHeight) {
+class SmileyConfig {
+    constructor(x, y, eyeHeight, eyePadding, circleRadius, mouthPaddingX, mouthPaddingY, mouthHeight) {
+        this.x = x;
+        this.y = y;
         this.eyeHeight = eyeHeight;
         this.eyePadding = eyePadding;
         this.circleRadius = circleRadius;
         this.mouthPaddingX = mouthPaddingX;
         this.mouthPaddingY = mouthPaddingY;
         this.mouthHeight = mouthHeight;
-        this.canvas = document.getElementById("canvas");
-        this.context = canvas.getContext("2d");
     }
 }
 
-var config;
 const smileys = {};
 var smileyIndex = 0;
 
-function initializeConfig() {
-    config = new Config(10, 5, 20, 6, 2, 7);
-}
 
 function createLine(context, x1, y1, x2, y2) {
     context.beginPath();
@@ -46,51 +42,62 @@ function createBezierCurve(context, startX, startY, x1, y1, x2, y2, x3, y3) {
 }
 
 function resizeAndDraw() {
-    var oldCanvasWidth = config.canvas.width;
-    var oldCanvasHeight = config.canvas.height;
-    config.canvas.width = window.innerWidth;
-    config.canvas.height = window.innerHeight;
-    var ratioX = config.canvas.width / oldCanvasWidth;
-    var ratioY = config.canvas.height / oldCanvasHeight;
+    var canvas = document.getElementById("canvas");
+    var oldCanvasWidth = canvas.width;
+    var oldCanvasHeight = canvas.height;
+    canvas.width = window.innerWidth;
+    canvas.height = window.innerHeight;
+    var ratioX = canvas.width / oldCanvasWidth;
+    var ratioY = canvas.height / oldCanvasHeight;
 
     //redraw
     for (let i = 0; i < smileyIndex; i++) {
         var smiley = smileys[i];
         smileys[i].x *= ratioX;
         smileys[i].y *= ratioY;
-        drawSmiley(smiley.x, smiley.y, true);
+        var context = canvas.getContext("2d");
+        drawSmiley(context, smiley.x, smiley.y, true);
     }
 }
 
-function drawSmiley(x, y, redraw) {
+function initializeConfig(x, y) {
+    return new SmileyConfig(x, y, 10, 5, 20, 6, 2, 7);
+}
+
+function drawSmiley(context, x, y, redraw) {
+    var config = initializeConfig(x, y);
     
     if (!redraw) {
-        smileys[smileyIndex] = {x, y};
+        smileys[smileyIndex] = config;
         smileyIndex++;
     }
-    createLine(config.context, x-config.eyePadding, y, x-config.eyePadding, y-config.eyeHeight);
-    createLine(config.context, x+config.eyePadding, y, x+config.eyePadding, y-config.eyeHeight);
+    createLine(context, x-config.eyePadding, y, x-config.eyePadding, y-config.eyeHeight);
+    createLine(context, x+config.eyePadding, y, x+config.eyePadding, y-config.eyeHeight);
     let startX = x-config.mouthPaddingX;
     let startY = y+config.mouthPaddingY;
     let endX = x+config.mouthPaddingX;
     let endY = y+config.mouthPaddingY+config.mouthHeight;
-    createBezierCurve(config.context, startX, startY, startX, endY, endX, endY, endX, startY);
-    createCircle(config.context, x, y, config.circleRadius);
+    createBezierCurve(context, startX, startY, startX, endY, endX, endY, endX, startY);
+    createCircle(context, x, y, config.circleRadius);
 
 }
 
-function convertXYToCanvas(e, mouseX, mouseY) {
-    var rect = config.canvas.getBoundingClientRect();
-    var scrollX = config.canvas.scrollWidth / config.canvas.width;
-    var scrollY = config.canvas.scrollHeight / config.canvas.height;
+function convertXYToCanvas(e, canvas, mouseX, mouseY) {
+    var rect = canvas.getBoundingClientRect();
+    var scrollX = canvas.scrollWidth / canvas.width;
+    var scrollY = canvas.scrollHeight / canvas.height;
     return {x: (mouseX-rect.left) / scrollX, y: (mouseY-rect.top) / scrollY};
 }
+
 
 function createSmiley(e) {
     let mouseX = e.clientX;
     let mouseY = e.clientY;
 
-    var canvasCoords = convertXYToCanvas(e, mouseX, mouseY);
-    drawSmiley(canvasCoords.x, canvasCoords.y, false);
+    var canvas = document.getElementById("canvas");
+    var context = canvas.getContext("2d");
+
+    var canvasCoords = convertXYToCanvas(e, canvas, mouseX, mouseY);
+    drawSmiley(context, canvasCoords.x, canvasCoords.y, false);
 }
 
