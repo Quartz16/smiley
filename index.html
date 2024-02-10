@@ -4,10 +4,11 @@
         <link rel="stylesheet" href="styles.css">
         <script src="index.js"></script>
     </head>
-    <body onload="initializeConfig(); resizeAndDraw(); " onresize="resizeAndDraw();">
+    <body onload="initializeConfig(); resizeAndDraw(); updateMaxMins();" onresize="resizeAndDraw(); updateMaxMins();">
             <img id="img" src="imgs/hedgehog.jpg" alt="Doodle of a hedgehog with quills fallen at its feet">
             <div id="slidecontainer">
-                <input type="range" class="slider" id="eyeHeightRange" name="Eye Height" min="getEyeHeightMin();" max="getEyeHeightMax();" value="10" onchange="currentConfig.eyeHeight=this.value;">
+                <p id="slidecontainer"> Eye Height: <input type="range" class="slider" id="eyeHeightRange" name="Eye Height" min="minEyeHeight();" max="maxEyeHeight();" value="40" oninput="currentConfig.eyeHeight=this.value; updateMaxMins();"></p>
+                Eye Padding: <input type="range" class="slider" id="eyePaddingRange" name="Eye Padding" min="minEyePadding();" max="maxEyePadding();" value="8" oninput="currentConfig.eyePadding=this.value; updateMaxMins();">
             </div>
             <canvas id="canvas" onmousedown="createSmiley(event); mousedown=true;" onmousemove="if (mousedown) createSmiley(event);" onmouseup="mousedown=false"> </canvas>
 

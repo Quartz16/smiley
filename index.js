@@ -22,6 +22,7 @@ var mousedown = false;
 
 
 function createLine(context, x1, y1, x2, y2) {
+    console.log(x1 + ", " + y1 + " " + x2 + ", " + y2 );
     context.beginPath();
     context.moveTo(x1, y1);
     context.lineTo(x2, y2);
@@ -80,8 +81,13 @@ function drawSmiley(context, x, y, redraw) {
         smileys[smileyIndex] = config;
         smileyIndex++;
     }
-    createLine(context, x-config.eyePadding, y, x-config.eyePadding, y-config.eyeHeight);
-    createLine(context, x+config.eyePadding, y, x+config.eyePadding, y-config.eyeHeight);
+    console.log(x + ", " + y + " " + config.eyePadding);
+    const ep = config.eyePadding;
+    const leftX = x - ep;
+    const rightX = parseFloat(x) + parseFloat(ep);
+    console.log("x: " + x + "ep: " + ep + "L: " + leftX + "R: " + rightX);
+    createLine(context, leftX, y, leftX, y-config.eyeHeight);
+    createLine(context, rightX, y, rightX, y-config.eyeHeight);
     let startX = x-config.mouthPaddingX;
     let startY = y+config.mouthPaddingY;
     let endX = x+config.mouthPaddingX;
@@ -109,11 +115,28 @@ function createSmiley(e) {
     drawSmiley(context, canvasCoords.x, canvasCoords.y, false);
 }
 
-function getEyeHeightMin() {
-    return 1;
+function minEyeHeight() {
+    return Math.max(1, (currentConfig.circleRadius / 30));
 }
 
-function getEyeHeightMax() {
-    return 100;
+function maxEyeHeight() {
+    return currentConfig.circleRadius - currentConfig.eyePadding - 2;
 }
 
+function minEyePadding() {
+    return Math.min(2* currentConfig.circleRadius - 2, Math.max(1, (currentConfig.eyeHeight / 10)));
+}
+
+function maxEyePadding() {
+    return (currentConfig.circleRadius / 2) - 2;
+}
+
+function updateMaxMins() {
+    var eyeHeight = document.getElementById("eyeHeightRange");
+    eyeHeight.min = minEyeHeight();
+    eyeHeight.max = maxEyeHeight();
+
+    var eyePadding = document.getElementById("eyePaddingRange");
+    eyePadding.min = minEyePadding();
+    eyePadding.max = maxEyePadding();
+}
