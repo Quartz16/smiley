@@ -16,6 +16,7 @@ p {
 .slidecontainer {
     float:right;
     text-indent:1em;
+    padding-bottom:1px;
 }
 .slider {
     float:right;

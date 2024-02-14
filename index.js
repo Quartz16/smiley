@@ -1,10 +1,10 @@
 
 
 class SmileyConfig {
-    constructor(x, y, size, eyeHeight, eyePadding, circleRadius, mouthPaddingX, mouthPaddingY, mouthHeight) {
+    constructor(x, y, smileySize, eyeHeight, eyePadding, circleRadius, mouthPaddingX, mouthPaddingY, mouthHeight) {
         this.x = x;
         this.y = y;
-        this.size = size;
+        this.smileySize = smileySize;
         this.eyeHeight = eyeHeight;
         this.eyePadding = eyePadding;
         this.circleRadius = circleRadius;
@@ -47,20 +47,27 @@ function createBezierCurve(context, startX, startY, x1, y1, x2, y2, x3, y3) {
     context.stroke();
 }
 
+
+
 function resizeAndDraw() {
     var canvas = document.getElementById("canvas");
     var oldCanvasWidth = canvas.width;
     var oldCanvasHeight = canvas.height;
     canvas.width = window.innerWidth;
     canvas.height = window.innerHeight;
-    var ratioX = canvas.width / oldCanvasWidth;
-    var ratioY = canvas.height / oldCanvasHeight;
+    const ratioX = parseFloat(canvas.width) / parseFloat(oldCanvasWidth);
+    const ratioY = parseFloat(canvas.height) / parseFloat(oldCanvasHeight);
 
     //redraw
     for (let i = 0; i < smileyIndex; i++) {
         var smiley = smileys[i];
-        smileys[i].x *= ratioX;
-        smileys[i].y *= ratioY;
+        smileys[i].x *= parseFloat(ratioX);
+        smileys[i].y *= parseFloat(ratioY);
+
+        var changeRatio = (2.0*ratioX*ratioY) / (ratioX+ratioY) ;
+        var changesize = parseFloat(smiley.smileySize) * parseFloat(changeRatio);
+        console.log("rscs: " + changesize);
+        changeSmileySize(changesize);
         var context = canvas.getContext("2d");
         drawSmiley(context, smiley.x, smiley.y, true);
     }
@@ -71,7 +78,7 @@ function initializeConfig() {
 }
 
 function createConfig(x, y) {
-    return new SmileyConfig(x, y, currentConfig.size, currentConfig.eyeHeight, currentConfig.eyePadding, currentConfig.circleRadius, currentConfig.mouthPaddingX, currentConfig.mouthPaddingY, currentConfig.mouthHeight);
+    return new SmileyConfig(x, y, currentConfig.smileySize, currentConfig.eyeHeight, currentConfig.eyePadding, currentConfig.circleRadius, currentConfig.mouthPaddingX, currentConfig.mouthPaddingY, currentConfig.mouthHeight);
 
 }
 
@@ -169,23 +176,21 @@ function maxMouthHeight() {
 }
 
 
-function minSize() {
-    var minsize = parseFloat(minCircleRadius()) / parseFloat(currentConfig.circleRadius) * parseFloat(currentConfig.size);
-    console.log("MS: " + minsize);
-    return minsize;
+function minSmileySize() {
+    return parseFloat(minCircleRadius()) / parseFloat(currentConfig.circleRadius) * parseFloat(currentConfig.smileySize);
 }
 
-function maxSize() {
-    return parseFloat(maxCircleRadius()) / parseFloat(currentConfig.circleRadius) * parseFloat(currentConfig.size);
+function maxSmileySize() {
+    return parseFloat(maxCircleRadius()) / parseFloat(currentConfig.circleRadius) * parseFloat(currentConfig.smileySize);
 }
 
-function changeSize(newSizeString) {
+function changeSmileySize(newSmileySizeString) {
     //don't want to do anything if the new size is 0, should be larger than that
-    var newSize = parseFloat(newSizeString);
-    console.log(newSize);
-    if (newSize == 0) return;
-    var oldSize = currentConfig.size;
-    var changeRatio = parseFloat(newSize) / parseFloat(oldSize);
+    var newSmileySize = parseFloat(newSmileySizeString);
+    console.log(newSmileySize);
+    if (newSmileySize == 0) return;
+    var oldSize = currentConfig.smileySize;
+    var changeRatio = parseFloat(newSmileySize) / parseFloat(oldSize);
     
     console.log("RATIO" + changeRatio);
     //update all config values
@@ -195,13 +200,15 @@ function changeSize(newSizeString) {
     currentConfig.mouthPaddingX *= changeRatio;
     currentConfig.mouthPaddingY *= changeRatio;
     currentConfig.mouthHeight *= changeRatio;
+    currentConfig.smileySize = newSmileySize;
 
+    updateMaxMins();
 }
 
 function updateMaxMins() {
-    var size = document.getElementById("sizeRange");
-    size.min = minSize();
-    size.max = maxSize();
+    var smileySize = document.getElementById("smileySizeRange");
+    smileySize.min = minSmileySize();
+    smileySize.max = maxSmileySize();
     var eyeHeight = document.getElementById("eyeHeightRange");
     eyeHeight.min = minEyeHeight();
     eyeHeight.max = maxEyeHeight();

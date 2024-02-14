@@ -4,10 +4,10 @@
         <link rel="stylesheet" href="styles.css">
         <script src="index.js"></script>
     </head>
-    <body onload="initializeConfig(); resizeAndDraw(); updateMaxMins();" onresize="resizeAndDraw(); updateMaxMins();">
+    <body onload="initializeConfig(); resizeAndDraw(); updateMaxMins();" onresize="resizeAndDraw(); ">
             <canvas id="canvas" onmousedown="createSmiley(event); mousedown=true;" onmousemove="if (mousedown) createSmiley(event);" onmouseup="mousedown=false"> </canvas>
             <img id="img" src="imgs/hedgehog.jpg" alt="Doodle of a hedgehog with quills fallen at its feet">
-            <p id="slidecontainer"> Size: <input type="range" class="slider" id="sizeRange" min="minSize();" max="maxSize();" step="0.0000001" value="1" oninput="changeSize(this.value); updateMaxMins();"></p>
+            <p id="slidecontainer"> Size: <input type="range" class="slider" id="smileySizeRange" min="minSmileySize();" max="maxSmileySize();" step="0.0000001" value="1" oninput="changeSmileySize(this.value); "></p>
             <p id="slidecontainer">Eye Height: <input type="range" class="slider" id="eyeHeightRange" min="minEyeHeight();" max="maxEyeHeight();" value="40" oninput="currentConfig.eyeHeight=this.value; updateMaxMins();"></p>
             <p id="slidecontainer"> Eye Padding: <input type="range" class="slider" id="eyePaddingRange" min="minEyePadding();" max="maxEyePadding();" value="8" oninput="currentConfig.eyePadding=this.value; updateMaxMins();"></p>
             <p id="slidecontainer"> Circle Radius: <input type="range" class="slider" id="circleRadiusRange" min="minCircleRadius();" max="maxCircleRadius();" value="80" oninput="currentConfig.circleRadius=this.value; updateMaxMins();"></p>
