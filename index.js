@@ -135,7 +135,7 @@ function maxEyePadding() {
 function minCircleRadius() {
     var canvas = document.getElementById("canvas");
 
-    return parseFloat(Math.max(Math.min(canvas.width, canvas.height)/30)) / parseFloat(2.0);
+    return parseFloat(Math.max((Math.min(canvas.width, canvas.height)/60), (currentConfig.mouthPaddingY+currentConfig.mouthHeight+2), (currentConfig.eyePadding+2), (currentConfig.eyeHeight+2), (currentConfig.mouthPaddingX+2)));
 }
 
 function maxCircleRadius() {
