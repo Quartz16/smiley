@@ -17,7 +17,7 @@ class SmileyConfig {
 }
 
 var currentConfig;
-const smileys = {};
+const smileys = [];
 var smileyIndex = 0;
 var mousedown = false;
 
@@ -69,7 +69,7 @@ function resizeAndDraw() {
         console.log("rscs: " + changesize);
         changeSmileySize(changesize);
         var context = canvas.getContext("2d");
-        drawSmiley(context, smiley.x, smiley.y, true);
+        drawSmiley(context, null, smiley.x, smiley.y, true);
     }
 }
 
@@ -77,13 +77,27 @@ function initializeConfig() {
     currentConfig = new SmileyConfig(0, 0, 1, 40, 20, 80, 30, 8, 28);
 }
 
+function initializePreviewConfig(x, y, scale) {
+    return new SmileyConfig(x, y,
+        (currentConfig.smileySize * scale),
+        (currentConfig.eyeHeight * scale),
+        (currentConfig.eyePadding * scale),
+        (currentConfig.circleRadius * scale),
+        (currentConfig.mouthPaddingX * scale),
+        (currentConfig.mouthPaddingY * scale),
+        (currentConfig.mouthHeight * scale));
+
+
+}
+
 function createConfig(x, y) {
     return new SmileyConfig(x, y, currentConfig.smileySize, currentConfig.eyeHeight, currentConfig.eyePadding, currentConfig.circleRadius, currentConfig.mouthPaddingX, currentConfig.mouthPaddingY, currentConfig.mouthHeight);
 
 }
 
-function drawSmiley(context, x, y, redraw) {
-    var config = createConfig(x, y);
+function drawSmiley(context, config, x, y, redraw) {
+    console.log("DRAWING SMILEY AT " + x + ", " + y);
+    if (config == null) var config = createConfig(x, y);
     
     if (!redraw) {
         smileys[smileyIndex] = config;
@@ -102,10 +116,38 @@ function drawSmiley(context, x, y, redraw) {
     let endY = parseFloat(y)+parseFloat(config.mouthPaddingY)+parseFloat(config.mouthHeight);
     createBezierCurve(context, startX, startY, startX, endY, endX, endY, endX, startY);
     createCircle(context, x, y, config.circleRadius);
-
 }
 
-function convertXYToCanvas(e, canvas, mouseX, mouseY) {
+function clearScreen() {
+    var canvas = document.getElementById("canvas");
+    var context = canvas.getContext("2d");
+    context.clearRect(0, 0, canvas.width, canvas.height);
+    //set smileys to nothing
+    smileys.length = 0;
+    smileyIndex = 0;
+}
+
+function drawPreview() { 
+    var canvas = document.getElementById("canvas");
+    var preview = document.getElementById("preview");
+    var prev_context = preview.getContext("2d");
+    preview.height = preview.width;
+
+    prev_context.fillStyle="white";
+    prev_context.fillRect(0, 0, preview.width, preview.height);
+    prev_context.fillStyle="black";
+    var canvasCoords = convertXYToCanvas(preview, (preview.width / 2), (preview.height / 2)); 
+
+    const scale = preview.width / currentConfig.circleRadius / 2;
+    
+
+    var prev_config = initializePreviewConfig(canvasCoords.x, canvasCoords.y, scale);
+    
+
+    drawSmiley(prev_context, prev_config, (preview.width / 2), (preview.height/2), true); 
+}
+
+function convertXYToCanvas(canvas, mouseX, mouseY) {
     var rect = canvas.getBoundingClientRect();
     var scrollX = canvas.scrollWidth / canvas.width;
     var scrollY = canvas.scrollHeight / canvas.height;
@@ -119,8 +161,8 @@ function createSmiley(e) {
     var canvas = document.getElementById("canvas");
     var context = canvas.getContext("2d");
 
-    var canvasCoords = convertXYToCanvas(e, canvas, mouseX, mouseY);
-    drawSmiley(context, canvasCoords.x, canvasCoords.y, false);
+    var canvasCoords = convertXYToCanvas(canvas, mouseX, mouseY);
+    drawSmiley(context, null, canvasCoords.x, canvasCoords.y, false);
 }
 
 function minEyeHeight() {
@@ -233,5 +275,5 @@ function updateMaxMins() {
     mouthHeight.min = minMouthHeight();
     mouthHeight.max = maxMouthHeight();
 
-
+    drawPreview();
 }

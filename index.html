@@ -7,13 +7,16 @@
     <body onload="initializeConfig(); resizeAndDraw(); updateMaxMins();" onresize="resizeAndDraw(); ">
             <canvas id="canvas" onmousedown="createSmiley(event); mousedown=true;" onmousemove="if (mousedown) createSmiley(event);" onmouseup="mousedown=false"> </canvas>
             <img id="img" src="imgs/hedgehog.jpg" alt="Doodle of a hedgehog with quills fallen at its feet">
-            <p id="slidecontainer"> Size: <input type="range" class="slider" id="smileySizeRange" min="minSmileySize();" max="maxSmileySize();" step="0.0000001" value="1" oninput="changeSmileySize(this.value); "></p>
-            <p id="slidecontainer">Eye Height: <input type="range" class="slider" id="eyeHeightRange" min="minEyeHeight();" max="maxEyeHeight();" value="40" oninput="currentConfig.eyeHeight=this.value; updateMaxMins();"></p>
-            <p id="slidecontainer"> Eye Padding: <input type="range" class="slider" id="eyePaddingRange" min="minEyePadding();" max="maxEyePadding();" value="8" oninput="currentConfig.eyePadding=this.value; updateMaxMins();"></p>
-            <p id="slidecontainer"> Circle Radius: <input type="range" class="slider" id="circleRadiusRange" min="minCircleRadius();" max="maxCircleRadius();" value="80" oninput="currentConfig.circleRadius=this.value; updateMaxMins();"></p>
-            <p id="slidecontainer">Mouth Padding X: <input type="range" class="slider" id="mouthPaddingXRange" min="minMouthPaddingX();" max="maxMouthPaddingX();" value="30" oninput="currentConfig.mouthPaddingX=this.value; updateMaxMins();"></p>
-            <p id="slidecontainer">Mouth Padding Y: <input type="range" class="slider" id="mouthPaddingYRange" min="minMouthPaddingY();" max="maxMouthPaddingY();" value="8" oninput="currentConfig.mouthPaddingY=this.value; updateMaxMins();"></p>
-            <p id="slidecontainer">Mouth Height: <input type="range" class="slider" id="mouthHeightRange" min="minMouthHeight();" max="maxMouthHeight();" value="28" oninput="currentConfig.mouthHeight=this.value; updateMaxMins();"></p>
+            <p class="slidecontainer"> <p>Size: <input type="range" class="slider" id="smileySizeRange" min="minSmileySize();" max="maxSmileySize();" step="0.0000001" value="1" oninput="changeSmileySize(this.value); "></p>
+            <p >Eye Height: <input type="range" class="slider" id="eyeHeightRange" min="minEyeHeight();" max="maxEyeHeight();" value="40" oninput="currentConfig.eyeHeight=this.value; updateMaxMins();"></p>
+            <p> Eye Space: <input type="range" class="slider" id="eyePaddingRange" min="minEyePadding();" max="maxEyePadding();" value="8" oninput="currentConfig.eyePadding=this.value; updateMaxMins();"></p>
+            <p> Circle Size: <input type="range" class="slider" id="circleRadiusRange" min="minCircleRadius();" max="maxCircleRadius();" value="80" oninput="currentConfig.circleRadius=this.value; updateMaxMins();"></p>
+            <p>Mouth Width: <input type="range" class="slider" id="mouthPaddingXRange" min="minMouthPaddingX();" max="maxMouthPaddingX();" value="30" oninput="currentConfig.mouthPaddingX=this.value; updateMaxMins();"></p>
+            <p>Chin Height: <input type="range" class="slider" id="mouthPaddingYRange" min="minMouthPaddingY();" max="maxMouthPaddingY();" value="8" oninput="currentConfig.mouthPaddingY=this.value; updateMaxMins();"></p>
+            <p>Mouth Height: <input type="range" class="slider" id="mouthHeightRange" min="minMouthHeight();" max="maxMouthHeight();" value="28" oninput="currentConfig.mouthHeight=this.value; updateMaxMins();"></p>
+            <p>Preview: <canvas id="preview"></canvas></p>
+            <button id="button" onclick="clearScreen();">Clear drawing</button>
+            </div>
 
             <!-- 
             <p id="debug">
