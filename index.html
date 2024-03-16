@@ -5,18 +5,50 @@
         <script src="index.js"></script>
     </head>
     <body onload="initializeConfig(); resizeAndDraw(); updateMaxMins();" onresize="resizeAndDraw(); ">
-            <canvas id="canvas" onmousedown="createSmiley(event); mousedown=true;" onmousemove="if (mousedown) createSmiley(event);" onmouseup="mousedown=false"> </canvas>
-            <img id="img" src="imgs/hedgehog.jpg" alt="Doodle of a hedgehog with quills fallen at its feet">
-            <p class="slidecontainer"> <p>Size: <input type="range" class="slider" id="smileySizeRange" min="minSmileySize();" max="maxSmileySize();" step="0.0000001" value="1" oninput="changeSmileySize(this.value); "></p>
-            <p >Eye Height: <input type="range" class="slider" id="eyeHeightRange" min="minEyeHeight();" max="maxEyeHeight();" value="40" oninput="currentConfig.eyeHeight=this.value; updateMaxMins();"></p>
-            <p> Eye Space: <input type="range" class="slider" id="eyePaddingRange" min="minEyePadding();" max="maxEyePadding();" value="8" oninput="currentConfig.eyePadding=this.value; updateMaxMins();"></p>
-            <p> Circle Size: <input type="range" class="slider" id="circleRadiusRange" min="minCircleRadius();" max="maxCircleRadius();" value="80" oninput="currentConfig.circleRadius=this.value; updateMaxMins();"></p>
-            <p>Mouth Width: <input type="range" class="slider" id="mouthPaddingXRange" min="minMouthPaddingX();" max="maxMouthPaddingX();" value="30" oninput="currentConfig.mouthPaddingX=this.value; updateMaxMins();"></p>
-            <p>Chin Height: <input type="range" class="slider" id="mouthPaddingYRange" min="minMouthPaddingY();" max="maxMouthPaddingY();" value="8" oninput="currentConfig.mouthPaddingY=this.value; updateMaxMins();"></p>
-            <p>Mouth Height: <input type="range" class="slider" id="mouthHeightRange" min="minMouthHeight();" max="maxMouthHeight();" value="28" oninput="currentConfig.mouthHeight=this.value; updateMaxMins();"></p>
-            <p>Preview: <canvas id="preview"></canvas></p>
-            <button id="button" onclick="clearScreen();">Clear drawing</button>
+        <div class="row">
+            <div class="columnleft">
+                <canvas id="canvas" onmousedown="createSmiley(event); mousedown=true;" onmousemove="if (mousedown) createSmiley(event);" onmouseup="mousedown=false;"> </canvas>
             </div>
+            <div class="columnright">
+                <img id="img" src="imgs/hedgehog.jpg" alt="Doodle of a hedgehog with quills fallen at its feet">
+                <div class="configline">Size: 
+                    <input id="smileySizeNum" class="slidernum" type="text" value="1" onkeydown="handleConfigText(event, 'smileySizeNum', 'smileySizeRange', 0);" />
+                    <input type="range" class="slider" id="smileySizeRange" min="currentConfig.minValue(0);" max="currentConfig.max(0);" step="0.0000001" value="1" oninput="changeSmileySize(this.value);" />
+                </div>
+                <div class="configline">Eye Height:
+                    <input id="eyeHeightNum" class="slidernum" type="text" value="40" onkeydown="handleConfigText(event, 'eyeHeightNum', 'eyeHeightRange', 1);" />
+                    <input type="range" class="slider" id="eyeHeightRange" min="currentConfig.minValue(1);" max="currentConfig.maxValue(1);" value="40" oninput="currentConfig.eyeHeight=this.value; updateMaxMins();" />
+                </div>
+                <div class="configline">Eye Space:
+                    <input id="eyePaddingNum" class="slidernum" type="text" value="8" onkeydown="handleConfigText(event, 'eyePaddingNum', 'eyePaddingRange', 2);" />
+                    <input type="range" class="slider" id="eyePaddingRange" min="currentConfig.minValue(2);" max="currentConfig.maxValue(2);" value="8" oninput="currentConfig.eyePadding=this.value; updateMaxMins();" />
+                </div>
+                <div class="configline">Circle Size: 
+                    <input id="circleRadiusNum" class="slidernum" type="text" value="80" onkeydown="handleConfigText(event, 'circleRadiusNum', 'circleRadiusRange', 3);" />
+                    <input type="range" class="slider" id="circleRadiusRange" min="currentConfig.minValue(3);" max="currentConfig.maxValue(3);" value="80" oninput="currentConfig.circleRadius=this.value; updateMaxMins();">
+                </div>
+                <div class="configline">Mouth Width: 
+                    <input id="mouthPaddingXNum" class="slidernum" type="text" value="30" onkeydown="handleConfigText(event, 'mouthPaddingXNum', 'mouthPaddingXRange', 4);" />
+                    <input type="range" class="slider" id="mouthPaddingXRange" min="currentConfig.minValue(4);" max="currentConfig.maxValue(4);" value="30" oninput="currentConfig.mouthPaddingX=this.value; updateMaxMins();" />
+                </div>
+                <div class="configline">Chin Height: 
+                    <input id="mouthPaddingYNum" class="slidernum" type="text" value="8" onkeydown="handleConfigText(event, 'mouthPaddingYNum', 'mouthPaddingYRange', 5);" />
+                    <input type="range" class="slider" id="mouthPaddingYRange" min="currentConfig.minValue(5);" max="currentConfig.maxValue(5);" value="8" oninput="currentConfig.mouthPaddingY=this.value; updateMaxMins();" />
+                </div>
+                <div class="configline">Mouth Height: 
+                    <input id="mouthHeightNum" class="slidernum" type="text" value="28" onkeydown="handleConfigText(event, 'mouthHeightNum', 'mouthHeightRange', 6);" />
+                    <input type="range" class="slider" id="mouthHeightRange" min="currentConfig.minValue(6);" max="currentConfig.maxValue(6);" value="28" oninput="currentConfig.mouthHeight=this.value; updateMaxMins();" />
+                </div>
+                <div class="configline">Preview: 
+                    <canvas id="preview"></canvas>
+                </div>
+                <div class="configline">
+                    <button id="button" onclick="initializeConfig(); updateMaxMins();">Reset to Default</button>
+                    <button id="button" onclick="clearScreen();">Clear drawing</button>
+                </div>
+                
+            </div>
+        </div>
 
             <!-- 
             <p id="debug">

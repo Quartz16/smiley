@@ -12,6 +12,111 @@ class SmileyConfig {
         this.mouthPaddingY = mouthPaddingY;
         this.mouthHeight = mouthHeight;
     }
+    get(configID) {
+        switch(configID) {
+            case 0:
+                return this.smileySize;
+            case 1:
+                return this.eyeHeight;
+            case 2:
+                return this.eyePadding;
+            case 3:
+                return this.circleRadius;
+            case 4:
+                return this.mouthPaddingX;
+            case 5:
+                return this.mouthPaddingY;
+            case 6:
+                return this.mouthHeight;
+            default:
+                return -1;
+
+        }
+    }
+    set(configID, newValue) {
+        switch(configID) {
+            case 0:
+                this.smileySize = newValue;
+                break;
+            case 1:
+                this.eyeHeight = newValue;
+                break;
+            case 2:
+                this.eyePadding = newValue;
+                break;
+            case 3:
+                this.circleRadius = newValue;
+                break;
+            case 4:
+                this.mouthPaddingX = newValue;
+                break;
+            case 5:
+                this.mouthPaddingY = newValue;
+                break;
+            case 6:
+                this.mouthHeight = newValue;
+                break;
+
+        }
+    }
+
+    minValue(configID) {
+        switch(configID) {
+            case 0:
+                //smileySize
+                return parseFloat(this.minValue(3)) / parseFloat(this.circleRadius) * parseFloat(this.smileySize);
+            case 1:
+                //eyeheight
+                return Math.max(1, (this.circleRadius / 30));
+            case 2:
+                //eyepadding
+                return Math.min(2* this.circleRadius - 2, Math.max(1, (this.eyeHeight / 10)));
+            case 3:
+                //circleradius
+                var canvas = document.getElementById("canvas");
+                return parseFloat(Math.max((Math.min(canvas.width, canvas.height)/60), (this.mouthPaddingY+this.mouthHeight+2), (this.eyePadding+2), (this.eyeHeight+2), (this.mouthPaddingX+2)));
+            case 4:
+                //mouthpaddingx
+                return this.eyePadding + Math.max(this.circleRadius/50, 2); 
+            case 5:
+                //mouthpaddingY
+                return Math.max(this.circleRadius/50, 2); 
+            case 6:
+                //mouthHeight
+                return Math.max(this.circleRadius/30, 2); 
+
+
+        }
+    }
+
+    maxValue(configID) {
+        switch(configID) {
+            case 0:
+                //smileysize
+                return parseFloat(this.maxValue(3)) / parseFloat(currentConfig.circleRadius) * parseFloat(this.smileySize);
+            case 1:
+                //eyeheight
+                return this.circleRadius - this.eyePadding - 2;
+            case 2:
+                //eyepadding
+                return (this.circleRadius / 2) - 2;
+            case 3:
+                //circleradius
+                var canvas = document.getElementById("canvas");
+                return parseFloat(Math.max(Math.min(canvas.width, canvas.height), 5)) / parseFloat(2.0);
+            case 4:
+                //mouthpaddingx
+                return parseFloat(0.9) * parseFloat(this.circleRadius) - 2; 
+            case 5:
+                //mouthpaddingY
+                return this.circleRadius - this.mouthHeight - 2; 
+            case 6:
+                //mouthheight
+                return this.circleRadius - this.mouthPaddingY - 2; 
+
+        }
+    }
+        
 
 
 }
@@ -104,12 +209,13 @@ function drawSmiley(context, config, x, y, redraw) {
         smileyIndex++;
     }
     console.log(x + ", " + y + " " + config.eyePadding);
-    const ep = config.eyePadding;
-    const leftX = x - ep;
+    const ep = parseFloat(config.eyePadding);
+    const leftX = parseFloat(x) - parseFloat(ep);
     const rightX = parseFloat(x) + parseFloat(ep);
+    const topY = parseFloat(y) - parseFloat(config.eyeHeight);
     console.log("x: " + x + "ep: " + ep + "L: " + leftX + "R: " + rightX);
-    createLine(context, leftX, y, leftX, y-config.eyeHeight);
-    createLine(context, rightX, y, rightX, y-config.eyeHeight);
+    createLine(context, leftX, parseFloat(y), leftX, topY);
+    createLine(context, rightX, parseFloat(y), rightX, topY);
     let startX = parseFloat(x)-parseFloat(config.mouthPaddingX);
     let startY = parseFloat(y)+parseFloat(config.mouthPaddingY);
     let endX = parseFloat(x)+parseFloat(config.mouthPaddingX);
@@ -165,66 +271,6 @@ function createSmiley(e) {
     drawSmiley(context, null, canvasCoords.x, canvasCoords.y, false);
 }
 
-function minEyeHeight() {
-    return Math.max(1, (currentConfig.circleRadius / 30));
-}
-
-function maxEyeHeight() {
-    return currentConfig.circleRadius - currentConfig.eyePadding - 2;
-}
-
-function minEyePadding() {
-    return Math.min(2* currentConfig.circleRadius - 2, Math.max(1, (currentConfig.eyeHeight / 10)));
-}
-
-function maxEyePadding() {
-    return (currentConfig.circleRadius / 2) - 2;
-}
-
-function minCircleRadius() {
-    var canvas = document.getElementById("canvas");
-
-    return parseFloat(Math.max((Math.min(canvas.width, canvas.height)/60), (currentConfig.mouthPaddingY+currentConfig.mouthHeight+2), (currentConfig.eyePadding+2), (currentConfig.eyeHeight+2), (currentConfig.mouthPaddingX+2)));
-}
-
-function maxCircleRadius() {
-    var canvas = document.getElementById("canvas");
-    return parseFloat(Math.max(Math.min(canvas.width, canvas.height), 5)) / parseFloat(2.0);
-}
-
-function minMouthPaddingX() {
-    return currentConfig.eyePadding + Math.max(currentConfig.circleRadius/50, 2); 
-}
-
-function maxMouthPaddingX() {
-    return parseFloat(0.9) * parseFloat(currentConfig.circleRadius) - 2; 
-}
-
-function minMouthPaddingY() {
-    return Math.max(currentConfig.circleRadius/50, 2); 
-}
-
-function maxMouthPaddingY() {
-    return currentConfig.circleRadius - currentConfig.mouthHeight - 2; 
-}
-
-
-function minMouthHeight() {
-    return Math.max(currentConfig.circleRadius/30, 2); 
-}
-
-function maxMouthHeight() {
-    return currentConfig.circleRadius - currentConfig.mouthPaddingY - 2; 
-}
-
-
-function minSmileySize() {
-    return parseFloat(minCircleRadius()) / parseFloat(currentConfig.circleRadius) * parseFloat(currentConfig.smileySize);
-}
-
-function maxSmileySize() {
-    return parseFloat(maxCircleRadius()) / parseFloat(currentConfig.circleRadius) * parseFloat(currentConfig.smileySize);
-}
 
 function changeSmileySize(newSmileySizeString) {
     //don't want to do anything if the new size is 0, should be larger than that
@@ -249,31 +295,94 @@ function changeSmileySize(newSmileySizeString) {
 
 function updateMaxMins() {
     var smileySize = document.getElementById("smileySizeRange");
-    smileySize.min = minSmileySize();
-    smileySize.max = maxSmileySize();
+    smileySize.min = currentConfig.minValue(0);
+    smileySize.max = currentConfig.maxValue(0);
+    smileySize.value = currentConfig.smileySize;
+    var smileySizeNum = document.getElementById("smileySizeNum");
+    smileySizeNum.value = currentConfig.smileySize.toFixed(4);
+
     var eyeHeight = document.getElementById("eyeHeightRange");
-    eyeHeight.min = minEyeHeight();
-    eyeHeight.max = maxEyeHeight();
+    eyeHeight.min = currentConfig.minValue(1);
+    eyeHeight.max = currentConfig.maxValue(1);
+    eyeHeight.value = currentConfig.eyeHeight;
+    var eyeHeightNum = document.getElementById("eyeHeightNum");
+    eyeHeightNum.value = parseFloat(currentConfig.eyeHeight).toFixed(4);
 
     var eyePadding = document.getElementById("eyePaddingRange");
-    eyePadding.min = minEyePadding();
-    eyePadding.max = maxEyePadding();
+    eyePadding.min = currentConfig.minValue(2);
+    eyePadding.max = currentConfig.maxValue(2);
+    eyePadding.value = currentConfig.eyePadding;
+    var eyePaddingNum = document.getElementById("eyePaddingNum");
+    eyePaddingNum.value = parseFloat(currentConfig.eyePadding).toFixed(4);
 
     var circleRadius = document.getElementById("circleRadiusRange");
-    circleRadius.min = minCircleRadius();
-    circleRadius.max = maxCircleRadius();
+    circleRadius.min = currentConfig.minValue(3);
+    circleRadius.max = currentConfig.maxValue(3);
+    circleRadius.value = currentConfig.circleRadius;
+    var circleRadiusNum = document.getElementById("circleRadiusNum");
+    circleRadiusNum.value = parseFloat(currentConfig.circleRadius).toFixed(4);
+
+
     var mouthPaddingX = document.getElementById("mouthPaddingXRange");
-    mouthPaddingX.min = minMouthPaddingX();
-    mouthPaddingX.max = maxMouthPaddingX();
+    mouthPaddingX.min = currentConfig.minValue(4);
+    mouthPaddingX.max = currentConfig.maxValue(4);
+    mouthPaddingX.value = currentConfig.mouthPaddingX;
+    var mouthPaddingXNum = document.getElementById("mouthPaddingXNum");
+    mouthPaddingXNum.value = parseFloat(currentConfig.mouthPaddingX).toFixed(4);
 
     var mouthPaddingY = document.getElementById("mouthPaddingYRange");
-    mouthPaddingY.min = minMouthPaddingY();
-    mouthPaddingY.max = maxMouthPaddingY();
+    mouthPaddingY.min = currentConfig.minValue(5);
+    mouthPaddingY.max = currentConfig.maxValue(5);
+    mouthPaddingY.value = currentConfig.mouthPaddingY;
+    var mouthPaddingYNum = document.getElementById("mouthPaddingYNum");
+    mouthPaddingYNum.value = parseFloat(currentConfig.mouthPaddingY).toFixed(4);
 
 
     var mouthHeight = document.getElementById("mouthHeightRange");
-    mouthHeight.min = minMouthHeight();
-    mouthHeight.max = maxMouthHeight();
+    mouthHeight.min = currentConfig.minValue(6);
+    mouthHeight.max = currentConfig.maxValue(6);
+    mouthHeight.value = currentConfig.mouthHeight;
+    var mouthHeightNum = document.getElementById("mouthHeightNum");
+    mouthHeightNum.value = parseFloat(currentConfig.mouthHeight).toFixed(4);
 
     drawPreview();
 }
+
+
+function handleConfigText(e, textId, sliderId, configID) {
+    var textbox = document.getElementById(textId);
+    var text = textbox.value;
+
+    var key = e.key;
+    console.log("Key: " + key);
+    if (key !== undefined) {
+        console.log(typeof key);
+        if (key == 'Backspace') {
+
+            textbox.value = text.substring(0, text.length - 1);
+
+        }
+        if (key === 'Enter') {
+            if ((parseFloat(text) >= currentConfig.minValue(configID)) && (parseFloat(text) <= currentConfig.maxValue(configID))) {
+                currentConfig.set(configID, parseFloat(text));
+                document.getElementById(sliderId).value = parseFloat(text);
+
+                console.log("ENTER: " + text);
+                updateMaxMins();
+            }
+        }
+        else if (((e.which > 47) && (e.which <58)) || (key === '.')) {
+            text = text + key;
+        }
+        else {
+            e.preventDefault();
+        }
+    }
+       
+
+    //textbox.value = text;
+}
+
+
+
+
