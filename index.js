@@ -165,16 +165,15 @@ function resizeAndDraw() {
 
     //redraw
     for (let i = 0; i < smileyIndex; i++) {
-        var smiley = smileys[i];
         smileys[i].x *= parseFloat(ratioX);
         smileys[i].y *= parseFloat(ratioY);
 
         var changeRatio = (2.0*ratioX*ratioY) / (ratioX+ratioY) ;
-        var changesize = parseFloat(smiley.smileySize) * parseFloat(changeRatio);
+        var changesize = parseFloat(smileys[i].smileySize) * parseFloat(changeRatio);
         console.log("rscs: " + changesize);
-        changeSmileySize(changesize);
+        changeSmileySize(smileys[i], changesize);
         var context = canvas.getContext("2d");
-        drawSmiley(context, null, smiley.x, smiley.y, true);
+        drawSmiley(context, smileys[i], smileys[i].x, smileys[i].y, true);
     }
 }
 
@@ -272,26 +271,28 @@ function createSmiley(e) {
 }
 
 
-function changeSmileySize(newSmileySizeString) {
+function changeSmileySize(config, newSmileySizeString) {
+    if (config == null) config = currentConfig;
     //don't want to do anything if the new size is 0, should be larger than that
     var newSmileySize = parseFloat(newSmileySizeString);
     console.log(newSmileySize);
     if (newSmileySize == 0) return;
-    var oldSize = currentConfig.smileySize;
-    var changeRatio = parseFloat(newSmileySize) / parseFloat(oldSize);
+    var oldSize = config.smileySize;
+    var changeRatio = newSmileySize / parseFloat(oldSize);
     
     console.log("RATIO" + changeRatio);
     //update all config values
-    currentConfig.eyeHeight *= changeRatio;
-    currentConfig.eyePadding *= changeRatio;
-    currentConfig.circleRadius *= changeRatio;
-    currentConfig.mouthPaddingX *= changeRatio;
-    currentConfig.mouthPaddingY *= changeRatio;
-    currentConfig.mouthHeight *= changeRatio;
-    currentConfig.smileySize = newSmileySize;
+    config.eyeHeight *= changeRatio;
+    config.eyePadding *= changeRatio;
+    config.circleRadius *= changeRatio;
+    config.mouthPaddingX *= changeRatio;
+    config.mouthPaddingY *= changeRatio;
+    config.mouthHeight *= changeRatio;
+    config.smileySize = newSmileySize;
 
     updateMaxMins();
 }
+
 
 function updateMaxMins() {
     var smileySize = document.getElementById("smileySizeRange");
@@ -386,3 +387,33 @@ function handleConfigText(e, textId, sliderId, configID) {
 
 
 
+function setCanvasURL() {
+    const canvas = document.getElementById("canvas");
+    const dataURL = canvas.toDataURL("image/png");
+    const downloadLink = document.getElementById("downloadLink");
+    downloadLink.href = dataURL;
+    console.log(dataURL);
+}
+
+function openImage() {
+    const background = document.getElementById("backgroundImage");
+    const file = document.getElementById("openImage").files[0];
+    const reader = new FileReader();
+    reader.addEventListener (
+        "load",
+            () => {
+                background.src = reader.result;
+            },
+        false,
+        );
+    if (file) {
+        reader.readAsDataURL(file);
+
+    }
+
+}
+
+function deleteImage() {
+    document.getElementById("backgroundImage").src="";
+
+}

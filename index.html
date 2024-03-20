@@ -7,13 +7,14 @@
     <body onload="initializeConfig(); resizeAndDraw(); updateMaxMins();" onresize="resizeAndDraw(); ">
         <div class="row">
             <div class="columnleft">
+                <img class="bgimg" id="backgroundImage" src="">
                 <canvas id="canvas" onmousedown="createSmiley(event); mousedown=true;" onmousemove="if (mousedown) createSmiley(event);" onmouseup="mousedown=false;"> </canvas>
             </div>
             <div class="columnright">
                 <img id="img" src="imgs/hedgehog.jpg" alt="Doodle of a hedgehog with quills fallen at its feet">
                 <div class="configline">Size: 
                     <input id="smileySizeNum" class="slidernum" type="text" value="1" onkeydown="handleConfigText(event, 'smileySizeNum', 'smileySizeRange', 0);" />
-                    <input type="range" class="slider" id="smileySizeRange" min="currentConfig.minValue(0);" max="currentConfig.max(0);" step="0.0000001" value="1" oninput="changeSmileySize(this.value);" />
+                    <input type="range" class="slider" id="smileySizeRange" min="currentConfig.minValue(0);" max="currentConfig.max(0);" step="0.0000001" value="1" oninput="changeSmileySize(null, this.value);" />
                 </div>
                 <div class="configline">Eye Height:
                     <input id="eyeHeightNum" class="slidernum" type="text" value="40" onkeydown="handleConfigText(event, 'eyeHeightNum', 'eyeHeightRange', 1);" />
@@ -44,6 +45,14 @@
                 </div>
                 <div class="configline">
                     <button id="button" onclick="initializeConfig(); updateMaxMins();">Reset to Default</button>
+                </div>
+                <div class="configline">
+                    <button id = "openImageButton" onclick="document.getElementById('openImage').click();" >Open image</button>
+                    <input id="openImage" type="file" onchange="openImage();" style="display:none;">
+                    <button id="deleteImage" onclick="deleteImage();">Delete image</button>
+                    <a href="" id="downloadLink" onclick="setCanvasURL();" download="drawing.png">
+                        <button id="downloadButton">Download drawing</button>
+                    </a>
                     <button id="button" onclick="clearScreen();">Clear drawing</button>
                 </div>
                 
