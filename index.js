@@ -155,14 +155,41 @@ function createBezierCurve(context, startX, startY, x1, y1, x2, y2, x3, y3) {
 
 
 function resizeAndDraw() {
-    var canvas = document.getElementById("canvas");
-    var oldCanvasWidth = canvas.width;
-    var oldCanvasHeight = canvas.height;
-    canvas.width = window.innerWidth;
-    canvas.height = window.innerHeight;
+    const canvas = document.getElementById("canvas");
+    const oldCanvasWidth = canvas.width;
+    const oldCanvasHeight = canvas.height;
+    canvas.width = 0.7 * window.innerWidth;
+    canvas.height = Math.min(0.7 * window.innerWidth, 0.95 * window.innerHeight);
+    const context = canvas.getContext("2d");
+    context.clearRect(0, 0, canvas.width, canvas.height);
     const ratioX = parseFloat(canvas.width) / parseFloat(oldCanvasWidth);
     const ratioY = parseFloat(canvas.height) / parseFloat(oldCanvasHeight);
 
+    const background = document.getElementById("backgroundImage");
+    if ((background.getAttribute('src') != "")) {
+        const oldWidth = background.width;
+        const oldHeight = background.height;
+        var newWidth;
+        var newHeight;
+        if (background.width == background.height) {
+            newWidth = Math.min(canvas.width, canvas.height);
+            newHeight = Math.min(canvas.width, canvas.height);
+
+        }
+        else if ((background.width / background.height) > (canvas.width / canvas.height)) {
+            newWidth = canvas.width;
+            newHeight = (oldHeight / oldWidth) * canvas.width;
+
+        }
+        else {
+            newWidth = (oldWidth / oldHeight) * canvas.height;
+            newHeight = canvas.height;
+
+        }
+        background.width = newWidth;
+        background.height = newHeight;
+        context.drawImage(background, (canvas.width-newWidth) / 2, (canvas.height-newHeight) / 2, newWidth, newHeight);
+    }
     //redraw
     for (let i = 0; i < smileyIndex; i++) {
         smileys[i].x *= parseFloat(ratioX);
@@ -172,7 +199,6 @@ function resizeAndDraw() {
         var changesize = parseFloat(smileys[i].smileySize) * parseFloat(changeRatio);
         console.log("rscs: " + changesize);
         changeSmileySize(smileys[i], changesize);
-        var context = canvas.getContext("2d");
         drawSmiley(context, smileys[i], smileys[i].x, smileys[i].y, true);
     }
 }
@@ -224,12 +250,10 @@ function drawSmiley(context, config, x, y, redraw) {
 }
 
 function clearScreen() {
-    var canvas = document.getElementById("canvas");
-    var context = canvas.getContext("2d");
-    context.clearRect(0, 0, canvas.width, canvas.height);
     //set smileys to nothing
     smileys.length = 0;
     smileyIndex = 0;
+    resizeAndDraw();
 }
 
 function drawPreview() { 
@@ -396,13 +420,19 @@ function setCanvasURL() {
 }
 
 function openImage() {
+    const canvas = document.getElementById("canvas");
     const background = document.getElementById("backgroundImage");
     const file = document.getElementById("openImage").files[0];
     const reader = new FileReader();
+    deleteImage();
     reader.addEventListener (
         "load",
             () => {
                 background.src = reader.result;
+                background.onload = function () {
+                    resizeAndDraw();
+                }
+                //draw image on canvas & redraw canvas
             },
         false,
         );
@@ -414,6 +444,10 @@ function openImage() {
 }
 
 function deleteImage() {
-    document.getElementById("backgroundImage").src="";
-
+    const background = document.getElementById("backgroundImage");
+    background.src="";
+    background.style.width = "auto";
+    background.style.height = "auto";
+        background.style.alignSelf = "center";
+    resizeAndDraw();
 }

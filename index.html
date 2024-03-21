@@ -7,11 +7,11 @@
     <body onload="initializeConfig(); resizeAndDraw(); updateMaxMins();" onresize="resizeAndDraw(); ">
         <div class="row">
             <div class="columnleft">
-                <img class="bgimg" id="backgroundImage" src="">
-                <canvas id="canvas" onmousedown="createSmiley(event); mousedown=true;" onmousemove="if (mousedown) createSmiley(event);" onmouseup="mousedown=false;"> </canvas>
+                <img class="bgimg" id="backgroundImage" src="" onload="resizeAndDraw();">
+                <canvas id="canvas" width="300" height="300" onmousedown="createSmiley(event); mousedown=true;" onmousemove="if (mousedown) createSmiley(event);" onmouseup="mousedown=false;"> </canvas>
             </div>
             <div class="columnright">
-                <img id="img" src="imgs/hedgehog.jpg" alt="Doodle of a hedgehog with quills fallen at its feet">
+                <img id="img" src="imgs/hedgehog_smiley.png" alt="Doodle of a hedgehog with quills fallen at its feet">
                 <div class="configline">Size: 
                     <input id="smileySizeNum" class="slidernum" type="text" value="1" onkeydown="handleConfigText(event, 'smileySizeNum', 'smileySizeRange', 0);" />
                     <input type="range" class="slider" id="smileySizeRange" min="currentConfig.minValue(0);" max="currentConfig.max(0);" step="0.0000001" value="1" oninput="changeSmileySize(null, this.value);" />
