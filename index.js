@@ -1,7 +1,7 @@
 
 
 class SmileyConfig {
-    constructor(x, y, smileySize, eyeHeight, eyePadding, circleRadius, mouthPaddingX, mouthPaddingY, mouthHeight, faceColor, eyeColor, leftEyeColor, rightEyeColor, mouthColor, circleColor, fillColor) {
+    constructor(x, y, smileySize, eyeHeight, eyePadding, circleRadius, mouthPaddingX, mouthPaddingY, mouthHeight, faceColor, eyeColor, leftEyeColor, rightEyeColor, mouthColor, circleColor, fillColor, transparentFillCheck) {
         this.x = x;
         this.y = y;
         this.smileySize = smileySize;
@@ -18,6 +18,7 @@ class SmileyConfig {
         this.mouthColor = mouthColor;
         this.circleColor = circleColor;
         this.fillColor = fillColor;
+        this.transparentFillCheck = transparentFillCheck;
     }
     get(configID) {
         switch(configID) {
@@ -49,6 +50,8 @@ class SmileyConfig {
                 return this.circleColor;
             case 13:
                 return this.fillColor;
+            case 14:
+                return this.transparentFillCheck;
 
             default:
                 return -1;
@@ -92,6 +95,8 @@ class SmileyConfig {
                 this.circleColor = newValue;
             case 13:
                 this.fillColor = newValue;
+            case 14:
+                this.transparentFillCheck = newValue;
 
         }
     }
@@ -174,25 +179,26 @@ function createLine(context, x1, y1, x2, y2, color) {
     context.stroke();
 }
 
-function createArc(context, x, y, radius, startAngle, endAngle, color, fillColor) {
+function createArc(context, x, y, radius, startAngle, endAngle, color, fillColor, transparentFillCheck) {
     console.log("COLOR: " + color);
     context.strokeStyle=color;
     context.beginPath();
     context.arc(x, y, radius, startAngle, endAngle);
     context.stroke();
-    var transparent = document.getElementById("transparentFill");
-    if ((transparent.checked == false) && (fillColor != null)) {
+    console.log("TF: " + transparentFillCheck);
+    if ((transparentFillCheck == false) && (fillColor != null)) {
         context.fillStyle = fillColor;
         context.fill();
     }
 
 }
 
-function createCircle(context, x, y, radius, color, fillColor) {
+function createCircle(context, x, y, radius, color, fillColor, transparentFillCheck) {
     console.log("COLOR: " + color);
     console.log("FILLCOLOR: " + fillColor);
+    console.log("TFC: " + transparentFillCheck);
     context.strokeStyle=color;
-    createArc(context, x, y, radius, 0, 2 * Math.PI, color, fillColor);
+    createArc(context, x, y, radius, 0, 2 * Math.PI, color, fillColor, transparentFillCheck);
 }
 
 function createBezierCurve(context, startX, startY, x1, y1, x2, y2, x3, y3, color) { 
@@ -256,7 +262,7 @@ function resizeAndDraw() {
 }
 
 function initializeConfig() {
-    currentConfig = new SmileyConfig(0, 0, 1, 40, 20, 80, 30, 8, 28, "#000000", "#000000", "#000000", "#000000", "#000000", "#000000", null);
+    currentConfig = new SmileyConfig(0, 0, 1, 40, 20, 80, 30, 8, 28, "#000000", "#000000", "#000000", "#000000", "#000000", "#000000", null, true);
 }
 
 function initializePreviewConfig(x, y, scale) {
@@ -275,11 +281,12 @@ function initializePreviewConfig(x, y, scale) {
         (currentConfig.mouthColor),
         (currentConfig.circleColor),
         (currentConfig.fillColor),
+        (currentConfig.transparentFillCheck),
     );
 }
 
 function createConfig(x, y) {
-    return new SmileyConfig(x, y, currentConfig.smileySize, currentConfig.eyeHeight, currentConfig.eyePadding, currentConfig.circleRadius, currentConfig.mouthPaddingX, currentConfig.mouthPaddingY, currentConfig.mouthHeight, currentConfig.faceColor, currentConfig.eyeColor, currentConfig.leftEyeColor, currentConfig.rightEyeColor, currentConfig.mouthColor, currentConfig.circleColor, currentConfig.fillColor);
+    return new SmileyConfig(x, y, currentConfig.smileySize, currentConfig.eyeHeight, currentConfig.eyePadding, currentConfig.circleRadius, currentConfig.mouthPaddingX, currentConfig.mouthPaddingY, currentConfig.mouthHeight, currentConfig.faceColor, currentConfig.eyeColor, currentConfig.leftEyeColor, currentConfig.rightEyeColor, currentConfig.mouthColor, currentConfig.circleColor, currentConfig.fillColor, currentConfig.transparentFillCheck);
 
 }
 
@@ -291,7 +298,7 @@ function drawSmiley(context, config, x, y, redraw) {
         smileys[smileyIndex] = config;
         smileyIndex++;
     }
-    createCircle(context, x, y, config.circleRadius, config.circleColor, config.fillColor);
+    createCircle(context, x, y, config.circleRadius, config.circleColor, config.fillColor, config.transparentFillCheck);
     console.log(x + ", " + y + " " + config.eyePadding);
     const ep = parseFloat(config.eyePadding);
     const leftX = parseFloat(x) - parseFloat(ep);

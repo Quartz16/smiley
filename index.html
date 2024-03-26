@@ -62,7 +62,7 @@
                 </div>
                 <div class="configline">Fill Color:
                     <input id="fillColor" type="color" oninput="if (this.value != null) {currentConfig.fillColor=this.value; drawPreview();}" />
-                    Transparent? <input id="transparentFill" type="checkbox" checked />
+                    Transparent? <input id="transparentFill" type="checkbox" oninput="currentConfig.transparentFillCheck=this.checked;" checked />
                 </div>
                 <div class="configline">Preview: 
                     <canvas id="preview"></canvas>
