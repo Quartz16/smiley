@@ -85,3 +85,21 @@ button {
     margin-right: 5px;
     margin-left: 5px;
 }
+#openImage {
+    display:none;
+}
+#downloadLink {
+    visibility:hidden;
+}
+#downloadButton {
+    visibility:visible;
+}
+.collapsible {
+
+}
+.collapsedContent {
+    display:none;
+    overflow:hidden;
+    text-indent: 20px;
+
+}

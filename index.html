@@ -4,7 +4,7 @@
         <link rel="stylesheet" href="styles.css">
         <script src="index.js"></script>
     </head>
-    <body onload="initializeConfig(); resizeAndDraw(); updateMaxMins();" onresize="resizeAndDraw(); ">
+    <body onload="initializeConfig(); resizeAndDraw(); updateMaxMins();" onresize="resizeAndDraw();">
         <div class="row">
             <div class="columnleft">
                 <img class="bgimg" id="backgroundImage" src="" onload="resizeAndDraw();">
@@ -40,6 +40,30 @@
                     <input id="mouthHeightNum" class="slidernum" type="text" value="28" onkeydown="handleConfigText(event, 'mouthHeightNum', 'mouthHeightRange', 6);" />
                     <input type="range" class="slider" id="mouthHeightRange" min="currentConfig.minValue(6);" max="currentConfig.maxValue(6);" value="28" oninput="currentConfig.mouthHeight=this.value; updateMaxMins();" />
                 </div>
+                <div class="configline">Face Color:
+                    <input id="faceColor" type="color" value="#000000" oninput="updateFaceColor();" />
+                <button type="button" id="faceCollapse" class="collapsible" onclick="toggleCollapsible('faceCollapse');">⮟</button>
+                <div class="collapsedContent">
+                    <div class="configline">Eye Color:
+                        <input id="eyeColor" type="color" value="#000000" oninput="updateEyeColor();" />
+                    <button type="button" id="eyeCollapse" class="Collapsible" onclick="toggleCollapsible('eyeCollapse');">⮟</button>
+                    <div class="collapsedContent">
+                        Left Eye Color: <input id="leftEyeColor" type="color" value="#000000" oninput="currentConfig.leftEyeColor=this.value;" />
+                        Right Eye Color: <input id="rightEyeColor" type="color" value="#000000" oninput="currentConfig.rightEyeColor=this.value;" />
+                    </div>
+                    </div>
+                    <div class="configline">Mouth Color:
+                        <input id="mouthColor" type="color" value="#000000" oninput="currentConfig.mouthColor=this.value;" />
+                    </div>
+                    <div class="configline">Circle Color:
+                        <input id="circleColor" type="color" value="#000000" oninput="currentConfig.circleColor=this.value; drawPreview();" />
+                    </div>
+                </div>
+                </div>
+                <div class="configline">Fill Color:
+                    <input id="fillColor" type="color" oninput="if (this.value != null) {currentConfig.fillColor=this.value; drawPreview();}" />
+                    Transparent? <input id="transparentFill" type="checkbox" checked />
+                </div>
                 <div class="configline">Preview: 
                     <canvas id="preview"></canvas>
                 </div>
@@ -48,9 +72,11 @@
                 </div>
                 <div class="configline">
                     <button id = "openImageButton" onclick="document.getElementById('openImage').click();" >Open image</button>
-                    <input id="openImage" type="file" onchange="openImage();" style="display:none;">
+                    <input id="openImage" type="file" onchange="openImage();" >
                     <button id="deleteImage" onclick="deleteImage();">Delete image</button>
-                    <a href="" id="downloadLink" onclick="setCanvasURL();" download="drawing.png">
+                </div>
+                <div class="configline">
+                    <a id="downloadLink" onclick="setCanvasURL();" download="drawing.png">
                         <button id="downloadButton">Download drawing</button>
                     </a>
                     <button id="button" onclick="clearScreen();">Clear drawing</button>
