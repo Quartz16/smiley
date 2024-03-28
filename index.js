@@ -216,8 +216,8 @@ function resizeAndDraw() {
     const canvas = document.getElementById("canvas");
     const oldCanvasWidth = canvas.width;
     const oldCanvasHeight = canvas.height;
-    canvas.width = 0.7 * window.innerWidth;
-    canvas.height = Math.min(0.7 * window.innerWidth, 0.95 * window.innerHeight);
+    canvas.width = 0.68 * window.innerWidth;
+    canvas.height = Math.min(0.68 * window.innerWidth, 0.95 * window.innerHeight);
     const context = canvas.getContext("2d");
     context.clearRect(0, 0, canvas.width, canvas.height);
     const ratioX = parseFloat(canvas.width) / parseFloat(oldCanvasWidth);
@@ -551,11 +551,11 @@ function updateFaceColor() {
 function toggleCollapsible(collapseID) {
     var collapsible = document.getElementById(collapseID);
     var content = collapsible.nextElementSibling;
-    if (content.style.display === "block") {
+    if (content.style.display === "table") {
         content.style.display = "none";
         collapsible.innerHTML = "⮟";
     } else {
-        content.style.display = "block";
+        content.style.display = "table";
         collapsible.innerHTML = "⮝";
     }
 

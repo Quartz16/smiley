@@ -1,11 +1,13 @@
 body {
     padding-right: 10px;
     padding-left: 10px;
-    font-size: 20px;
+    margin-right:5px;
+    margin-left:5px;
+    font-size: 15px;
 }
 .columnleft {
     float: left;
-    width: 70vw;
+    width: 70%;
     padding-right: 5px;
     padding-left: 5px;
     position:relative;
@@ -17,7 +19,12 @@ body {
     text-indent: 10px;
     padding-right: 5px;
     padding-left: 5px;
-    font-size: 16px;
+    font-size: 15px;
+}
+.col {
+    float: left;
+    width: 50%;
+
 }
 .row:after {
     content: "";
@@ -48,13 +55,31 @@ img {
     padding-right: 5px;
     padding-left: 5px;
 }
+.configtext {
+    display: table-cell;
+    vertical-align: middle;
+    float:left;
+    width:40%;
+}
+.colorPicker {
+    line-height: 1;
+    display: table-cell;
+    vertical-align: middle;
+    box-sizing: border-box;
+    padding:0;
+    width: 3vw;
+    height: 1em;
+    margin-top: 1px;
+    margin-bottom: 1px;
+
+}
 .slider {
-    text-indent: 1em;
     float: right;
     width: 30%;
     height: auto;
 }
 .slidernum {
+    float:left;
     margin-left: 5px;
     width: 18%;
     height: auto;
@@ -75,15 +100,13 @@ canvas {
     height: 7vw;
     height: 7vw;
     border: 1px solid grey;
-    margin-left: 5px;
 
 }
 button {
-    line-height: 1.5;
-    font-size: 18px;
-    margin-top: 2px;
+    font-size: 15px;
     margin-right: 5px;
     margin-left: 5px;
+    line-height: 1;
 }
 #openImage {
     display:none;
@@ -95,11 +118,23 @@ button {
     visibility:visible;
 }
 .collapsible {
+    display: table-cell;
+
+    padding-top: 0px;
+    padding-bottom: 0px;
 
 }
 .collapsedContent {
     display:none;
     overflow:hidden;
-    text-indent: 20px;
+    margin-left: 10px;
+    width: 100%;
+    vertical-align: middle;
+
+}
+.eyeColorText {
+    float:left;
+    width:65%;
+    height:auto;
 
 }

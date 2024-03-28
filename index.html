@@ -12,59 +12,80 @@
             </div>
             <div class="columnright">
                 <img id="img" src="imgs/hedgehog_smiley.png" alt="Doodle of a hedgehog with quills fallen at its feet">
-                <div class="configline">Size: 
+                <div class="configline">
+                    <div class="configtext"> Size: </div>
                     <input id="smileySizeNum" class="slidernum" type="text" value="1" onkeydown="handleConfigText(event, 'smileySizeNum', 'smileySizeRange', 0);" />
                     <input type="range" class="slider" id="smileySizeRange" min="currentConfig.minValue(0);" max="currentConfig.max(0);" step="0.0000001" value="1" oninput="changeSmileySize(null, this.value);" />
                 </div>
-                <div class="configline">Eye Height:
+                <div class="configline">
+                    <div class="configtext"> Eye Height: </div>
                     <input id="eyeHeightNum" class="slidernum" type="text" value="40" onkeydown="handleConfigText(event, 'eyeHeightNum', 'eyeHeightRange', 1);" />
                     <input type="range" class="slider" id="eyeHeightRange" min="currentConfig.minValue(1);" max="currentConfig.maxValue(1);" value="40" oninput="currentConfig.eyeHeight=this.value; updateMaxMins();" />
                 </div>
-                <div class="configline">Eye Space:
+                <div class="configline">
+                    <div class="configtext"> Eye Space: </div>
                     <input id="eyePaddingNum" class="slidernum" type="text" value="8" onkeydown="handleConfigText(event, 'eyePaddingNum', 'eyePaddingRange', 2);" />
                     <input type="range" class="slider" id="eyePaddingRange" min="currentConfig.minValue(2);" max="currentConfig.maxValue(2);" value="8" oninput="currentConfig.eyePadding=this.value; updateMaxMins();" />
                 </div>
-                <div class="configline">Circle Size: 
+                <div class="configline"> 
+                    <div class="configtext"> Circle Size: </div>
                     <input id="circleRadiusNum" class="slidernum" type="text" value="80" onkeydown="handleConfigText(event, 'circleRadiusNum', 'circleRadiusRange', 3);" />
                     <input type="range" class="slider" id="circleRadiusRange" min="currentConfig.minValue(3);" max="currentConfig.maxValue(3);" value="80" oninput="currentConfig.circleRadius=this.value; updateMaxMins();">
                 </div>
-                <div class="configline">Mouth Width: 
+                <div class="configline"> 
+                    <div class="configtext"> Mouth Width: </div>
                     <input id="mouthPaddingXNum" class="slidernum" type="text" value="30" onkeydown="handleConfigText(event, 'mouthPaddingXNum', 'mouthPaddingXRange', 4);" />
                     <input type="range" class="slider" id="mouthPaddingXRange" min="currentConfig.minValue(4);" max="currentConfig.maxValue(4);" value="30" oninput="currentConfig.mouthPaddingX=this.value; updateMaxMins();" />
                 </div>
-                <div class="configline">Chin Height: 
+                <div class="configline">
+                    <div class="configtext"> Chin Height: </div>
                     <input id="mouthPaddingYNum" class="slidernum" type="text" value="8" onkeydown="handleConfigText(event, 'mouthPaddingYNum', 'mouthPaddingYRange', 5);" />
                     <input type="range" class="slider" id="mouthPaddingYRange" min="currentConfig.minValue(5);" max="currentConfig.maxValue(5);" value="8" oninput="currentConfig.mouthPaddingY=this.value; updateMaxMins();" />
                 </div>
-                <div class="configline">Mouth Height: 
+                <div class="configline">
+                    <div class="configtext"> Mouth Height: </div>
                     <input id="mouthHeightNum" class="slidernum" type="text" value="28" onkeydown="handleConfigText(event, 'mouthHeightNum', 'mouthHeightRange', 6);" />
                     <input type="range" class="slider" id="mouthHeightRange" min="currentConfig.minValue(6);" max="currentConfig.maxValue(6);" value="28" oninput="currentConfig.mouthHeight=this.value; updateMaxMins();" />
                 </div>
-                <div class="configline">Face Color:
-                    <input id="faceColor" type="color" value="#000000" oninput="updateFaceColor();" />
+                <div class="configline">
+                    <div class="configtext"> Face Color: </div>
+                    <input id="faceColor" class="colorPicker" type="color" value="#000000" oninput="updateFaceColor();" />
                 <button type="button" id="faceCollapse" class="collapsible" onclick="toggleCollapsible('faceCollapse');">⮟</button>
                 <div class="collapsedContent">
-                    <div class="configline">Eye Color:
-                        <input id="eyeColor" type="color" value="#000000" oninput="updateEyeColor();" />
-                    <button type="button" id="eyeCollapse" class="Collapsible" onclick="toggleCollapsible('eyeCollapse');">⮟</button>
+                    <div class="configline">
+                        <div class="configtext"> Eye Color: </div>
+                        <input id="eyeColor" class="colorPicker" type="color" value="#000000" oninput="updateEyeColor();" />
+                    <button type="button" id="eyeCollapse" class="collapsible" onclick="toggleCollapsible('eyeCollapse');">⮟</button>
                     <div class="collapsedContent">
-                        Left Eye Color: <input id="leftEyeColor" type="color" value="#000000" oninput="currentConfig.leftEyeColor=this.value;" />
-                        Right Eye Color: <input id="rightEyeColor" type="color" value="#000000" oninput="currentConfig.rightEyeColor=this.value;" />
+                        <div class="configline">
+                            <div class="col">
+                                <div class="eyeColorText"> Left Eye Color: </div>
+                                <input class="colorPicker" id="leftEyeColor" type="color" value="#000000" oninput="currentConfig.leftEyeColor=this.value;" />
+                            </div>
+                            <div class="col">
+                                <div class="eyeColorText"> Right Eye Color: </div>
+                                <input class="colorPicker" id="rightEyeColor" type="color" value="#000000" oninput="currentConfig.rightEyeColor=this.value;" />
+                            </div>
+                        </div>
                     </div>
                     </div>
-                    <div class="configline">Mouth Color:
-                        <input id="mouthColor" type="color" value="#000000" oninput="currentConfig.mouthColor=this.value;" />
+                    <div class="configline">
+                        <div class="configtext"> Mouth Color: </div>
+                        <input id="mouthColor" class="colorPicker" type="color" value="#000000" oninput="currentConfig.mouthColor=this.value;" />
                     </div>
-                    <div class="configline">Circle Color:
-                        <input id="circleColor" type="color" value="#000000" oninput="currentConfig.circleColor=this.value; drawPreview();" />
+                    <div class="configline">
+                        <div class="configtext"> Circle Color: </div>
+                        <input id="circleColor" class="colorPicker" type="color" value="#000000" oninput="currentConfig.circleColor=this.value; drawPreview();" />
                     </div>
                 </div>
                 </div>
-                <div class="configline">Fill Color:
-                    <input id="fillColor" type="color" oninput="if (this.value != null) {currentConfig.fillColor=this.value; drawPreview();}" />
+                <div class="configline">
+                        <div class="configtext"> Fill Color: </div>
+                    <input id="fillColor" type="color" class="colorPicker" oninput="if (this.value != null) {currentConfig.fillColor=this.value; drawPreview();}" />
                     Transparent? <input id="transparentFill" type="checkbox" oninput="currentConfig.transparentFillCheck=this.checked;" checked />
                 </div>
-                <div class="configline">Preview: 
+                <div class="configline">
+                    <div class="configtext"> Preview: </div>
                     <canvas id="preview"></canvas>
                 </div>
                 <div class="configline">
